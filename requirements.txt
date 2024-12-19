@@ -1,0 +1,7 @@
+# Direct runtime dependencies only. Transitive packages are resolved by pip.
+fastapi>=0.115
+uvicorn>=0.34
+SQLAlchemy>=2.0
+pydantic>=2.10
+APScheduler>=3.11
+httpx>=0.28
