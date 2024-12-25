@@ -1,0 +1,35 @@
+{
+  "mode": "Static bundled rate snapshot and rules interpreter; no live financial quote or hosted model.",
+  "exchanges": [
+    {
+      "request": "GET /v1/convert?from=USD&to=JPY&amount=100",
+      "status": 200,
+      "response": {
+        "source": "USD",
+        "target": "JPY",
+        "amount": 100.0,
+        "converted": 15604.4691,
+        "rate": 156.0446906,
+        "rate_date": "2026-10-28",
+        "base": "EUR"
+      }
+    },
+    {
+      "request": "POST /v1/convert/ask",
+      "status": 200,
+      "response": {
+        "question": "how much is 250 dollars in japanese yen",
+        "interpreter": "rules",
+        "conversion": {
+          "source": "USD",
+          "target": "JPY",
+          "amount": 250.0,
+          "converted": 39011.1727,
+          "rate": 156.0446906,
+          "rate_date": "2026-10-28",
+          "base": "EUR"
+        }
+      }
+    }
+  ]
+}

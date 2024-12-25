@@ -16,7 +16,7 @@ $ curl -s 'http://localhost:8000/v1/convert?from=USD&to=JPY&amount=100'
 
 ## Getting it running
 
-Python 3.13 or newer (developed on 3.14, the image uses 3.13). No database
+Python 3.12 or newer (native checks use 3.12; the image uses 3.13). No database
 server, no API key, and no network required.
 
 ```bash
@@ -198,3 +198,16 @@ config` parses is all that was checked.
   JPY has no minor unit and BHD has three, so billing would need a real table.
 - **No Redis, and no Postgres service in Compose.** One indexed table holding
   ~30 rows per working day needs neither, and `DATABASE_URL` takes a PG URL.
+
+
+## Offline conversion run
+
+![Native conversion responses](docs/screenshots/native-api.png)
+
+The capture uses the bundled static rates and rule-based question parser. These
+are fixture rates, not a live ECB quote. The [exchange record](docs/native-api.json)
+contains both a numeric conversion and a conversion asked in plain English.
+
+## Author
+
+[**Muhammad Nadeem**](https://github.com/dev-mnadeem)
