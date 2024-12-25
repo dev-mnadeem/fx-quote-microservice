@@ -1,0 +1,35 @@
+# Two services share one image: the API, and a one-shot seeder that fills
+# the database before the API starts answering questions.
+services:
+  seed:
+    build: .
+    image: currency-exchange:local
+    environment:
+      # Change to "ecb" to pull live rates from the European Central Bank.
+      RATES_PROVIDER: ${RATES_PROVIDER:-static}
+      DATABASE_URL: sqlite:////data/exchange_rate.db
+    volumes:
+      - rates-data:/data
+    command: ["python", "-m", "app.cli", "seed"]
+    restart: "no"
+
+  api:
+    build: .
+    image: currency-exchange:local
+    depends_on:
+      seed:
+        condition: service_completed_successfully
+    environment:
+      RATES_PROVIDER: ${RATES_PROVIDER:-ecb}
+      NLQ_PROVIDER: ${NLQ_PROVIDER:-rules}
+      SCHEDULER_ENABLED: ${SCHEDULER_ENABLED:-true}
+      DATABASE_URL: sqlite:////data/exchange_rate.db
+      ANTHROPIC_API_KEY: ${ANTHROPIC_API_KEY:-}
+    ports:
+      - "${API_PORT:-8000}:8000"
+    volumes:
+      - rates-data:/data
+    restart: unless-stopped
+
+volumes:
+  rates-data:
